@@ -1,0 +1,7 @@
+{% extends 'bias_checker/base.html'%}
+{% block maincontent %}
+    <div class="content">
+        {{content}}
+        <a href = "{% url 'bias_checker:index' %}" class="submit-output-btn">Back</a>
+    </div>
+{% endblock %}

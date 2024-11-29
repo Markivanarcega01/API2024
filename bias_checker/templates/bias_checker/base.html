@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gender Checker</title>
+    {% load static %}
+</head>
+<body>
+    <div class="nav">
+        <div class="title-logo">
+            <img src="/static/bias_checker/images/UPOULogo.png" width="100" height="100"/>
+            <div class="header-text">
+                <span class="upou0">University of the Philippines</span> 
+                <span class="upou1">Open University</span> 
+                <span class="upou2">Gender Checker</span>
+            </div>
+        </div>
+        <div class="upou-links">
+            <a href="https://networks.upou.edu.ph/">Networks</a>
+            <a href="https://workspace.upou.edu.ph/">Workspace</a>
+            <a href="https://myportal.upou.edu.ph/">MyPortal</a>
+        </div>
+    </div>
+    {% block maincontent%}
+    {% endblock %}
+
+    <script src="{% static 'bias_checker/index.js' %}"></script>
+    <link rel = "stylesheet" href = "{% static 'bias_checker/style.css' %}">
+</body>
+</html>

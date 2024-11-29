@@ -1,0 +1,24 @@
+{% extends 'bias_checker/base.html'%}
+{% block maincontent %}
+    <div class="content">
+            <ul class="output-list">
+            {% if form != None %}
+                {% for data in form %}
+                    <li class="list-content">
+                        <a href="{{data.file.url}}" download>{{data.file}}</a>
+                        <form action="{% url 'bias_checker:output' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input value="{{data.id}}" hidden name="data-id"/>
+                            <button type="submit" class="trash-btn">
+                                <img src="/static/bias_checker/images/trash-solid.svg" width="20px" height="20px"/>
+                            </button>
+                        </form>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p>{{content}}</p>
+            {% endif %}
+            </ul>
+        <a href = "{% url 'bias_checker:index' %}" class="submit-output-btn">Back</a>
+    </div>
+{% endblock %}

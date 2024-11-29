@@ -1,0 +1,161 @@
+li a{
+    color:rgb(4, 101, 153);
+}
+html, body {
+    /* background:white url("images/background.jpg") no-repeat; */
+    background: #FBFBFB;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* #div-inputfield{
+    
+}
+
+div[contenteditable=true]{
+height:auto;
+    min-height: 150px;
+    max-width: 500px;
+    border-width: 1px;
+    border-style: solid;
+} */
+
+[contenteditable=true]:empty:before{
+    content: attr(placeholder);
+    pointer-events: none;
+    display: block;
+    color:#555;
+    font-size: 20px;
+    width: 100%;
+  }
+  
+  /* */
+  
+div[contenteditable=true] {
+    border: 1px solid #dddddd;
+    width: 100%;
+    min-height: 290px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px 1px #dddddd;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: white;
+}
+
+.nav{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 0;
+    /* background-color: #AF1740; */
+    background-color: white;
+    justify-content: space-evenly;
+    /* border: 1px solid red; */
+}
+
+.title-logo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.content{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.submit-output-btn{
+    background-color: firebrick;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: fit-content;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    height: 100%;
+}
+
+.header-text{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction:column;
+}
+
+.upou0, .upou2{
+    font-size: small;
+}
+.upou1{
+    font-weight:700;
+    font-size: medium;
+    align-self: self-end;
+}
+
+.upou2{
+    align-self: self-end;
+}
+
+
+.upou-links a{
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    color: #333333;
+}
+
+.upou-links{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.output-list{
+    list-style-type: none;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px 1px #dddddd;
+
+}
+
+.list-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+.list-content a{
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.trash-btn{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.convert-btn{
+    margin-top:10px ;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: firebrick;
+    color: white;
+    cursor: pointer;
+}
+
+
+
+
+
+  
