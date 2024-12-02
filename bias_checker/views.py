@@ -25,7 +25,6 @@ def index(request):
             gender = dictionary
             last = File.objects.last()
 
-            fileName = f"gender_checked_{last.id}_{last.file}"
             save_directory = os.path.join(settings.BASE_DIR, 'media')
             file_path = os.path.join(save_directory,str(last.file))#Get the saved file from submit
             doc = Document(file_path)
@@ -48,6 +47,7 @@ def index(request):
             else:
                 doc.add_paragraph(report[0])
             print(count)
+            fileName = f"gender_checked_{last.id}_{last.file}"
             File.objects.filter(pk = last.id).update(file = fileName)# update the database to match the file
             doc.save(os.path.join(save_directory,fileName)) #save the file with a new filename
             os.remove(file_path) #remove the old file
@@ -96,21 +96,23 @@ def convert(request):
             cleaned_data = data.replace("</div>", "")
             separated = cleaned_data.split("<div>")
             print(separated)
+
+            #create empty file
+            File.objects.create(file = "generated_file.docx")
+            last = File.objects.last()
             doc = Document()
+            
             for row in separated:
                 doc.add_paragraph(row)
 
-            print(platform.platform())
-            if 'mac' in platform.platform().lower():
-                macDirectory = os.path.expanduser('~/Desktop')
-                doc.save(os.path.join(macDirectory,"generated_file.docx"))
-            elif 'windows' in platform.platform().lower():
-                windowsDirectory = os.path.join(os.path.join(os.environ["USERPROFILE"]), 'Desktop')
-                print(windowsDirectory)
-            
+            fileName = f"{last.id}_{last.file}"
+            File.objects.filter(pk = last.id).update(file = fileName)# update the database to match the file
+            save_directory = os.path.join(settings.BASE_DIR, 'media')
+            file_path = os.path.join(save_directory, fileName)#Get the saved file from submit
+            doc.save(file_path)
             #return redirect(reverse("bias_checker:index"))
         
-        return render(request, "bias_checker/index.html", {"path":macDirectory})
+        return render(request, "bias_checker/index.html", {"success":"File generated is located at 'Files'"})
     except:
         return render(request, "bias_checker/error.html", {"content":"CONVERSION ERROR"})
 

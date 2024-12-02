@@ -9,7 +9,7 @@
                     <textarea id="hiddenTextArea" hidden name="hiddenTextArea"></textarea>
                     <button class="convert-btn" type="submit" hidden>Convert to docx</button>
                 </form>
-                <p>Generated File location: {{path}}</p>
+                <p>{{success}}</p>
             </div>
             <div id="file-form" class="file-form">
                 <p>Upload Document Files:</p>
@@ -19,7 +19,7 @@
                         {{item}}
                     {% endfor %}
                     <button type="submit" class="submit-output-btn"/>Gender Check</button>
-                    <a href="{% url 'bias_checker:output' %}" class="submit-output-btn">Checked Files</a>
+                    <a href="{% url 'bias_checker:output' %}" class="submit-output-btn">Files</a>
                 </form>
             </div>
         </div>

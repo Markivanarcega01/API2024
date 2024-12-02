@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-o_ggt!b+axdjyhe!!qf$6+b@#3_d2h6@f56i9%)@*(51@w8aq8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["Markivan01.pythonanywhere.com"]
+ALLOWED_HOSTS = ["Markivan01.pythonanywhere.com","127.0.0.1"]
 
 
 # Application definition
@@ -62,7 +62,6 @@ INTERNAL_IPS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
 ROOT_URLCONF = 'gendersensitivitywebpage.urls'
 
 TEMPLATES = [
@@ -132,6 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
