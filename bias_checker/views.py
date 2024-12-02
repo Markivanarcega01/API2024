@@ -19,7 +19,7 @@ def index(request):
             if form.is_valid():
                 form.save()
             else:
-                return render(request, "bias_checker/error.html", {"content":"INTERNAL ERROR"})
+                return render(request, "bias_checker/error.html", {"content":"FILE ALREADY EXISTS"})
 
             count = 0
             gender = dictionary
@@ -41,7 +41,7 @@ def index(request):
                     else:
                         p.add_run(part + " ")
 
-            report = ["No gender-bias detected", f"There are {count} gender-bias detected"]
+            report = ["No gender-bias detected", f"{count} gender-bias detected"]
             if(count > 0):
                 doc.add_paragraph(report[1])
             else:
