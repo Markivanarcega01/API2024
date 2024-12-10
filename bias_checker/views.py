@@ -94,9 +94,7 @@ def convert(request):
     try:
         if request.method == "POST":
             data:str = request.POST.get("hiddenTextArea")
-            cleaned_data = data.replace('</div>', "")
-            cleaned_data = data.replace('<span class="highlight-word">', "")
-            cleaned_data = data.replace('</span>',"")
+            cleaned_data = data.replace('</div>', "").replace('<span class="highlight-word">', "").replace('</span>',"")
             separated = cleaned_data.split("<div>")
             print(separated)
 
