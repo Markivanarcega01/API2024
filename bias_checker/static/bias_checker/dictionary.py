@@ -68,6 +68,7 @@ dictionary = [
     'maiden',
     'mailman',
     'man',
+    'men',
     'man-made',
     'mankind',
     'manning',

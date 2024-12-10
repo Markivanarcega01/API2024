@@ -32,8 +32,10 @@ def index(request):
                 parts = original_text.split(" ")
                 p.clear()
                 for part in parts:
-                    cleaned_data = re.sub(r'[^A-Za-z0-9.-]', '', part)
-                    if cleaned_data in gender:
+                    cleaned_data = re.sub(r"’s", '', part)
+                    cleaned_data1 = re.sub(r"[^A-Za-z0-9.-]", '', cleaned_data)
+                    print(cleaned_data1.lower(), part)
+                    if cleaned_data1.lower() in gender:
                         count = count + 1
                         styled_run = p.add_run(part + " ")
                         styled_run.font.color.rgb = RGBColor(255,0,0)
