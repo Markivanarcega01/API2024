@@ -7,8 +7,7 @@ import os
 from .forms import FileForm
 from .models import File
 from bias_checker.static.bias_checker.dictionary import dictionary
-import platform
-
+import re
 # Create your views here.
 
 def index(request):
@@ -28,18 +27,19 @@ def index(request):
             save_directory = os.path.join(settings.BASE_DIR, 'media')
             file_path = os.path.join(save_directory,str(last.file))#Get the saved file from submit
             doc = Document(file_path)
-
             for p in doc.paragraphs:
                 original_text = p.text
                 parts = original_text.split(" ")
                 p.clear()
                 for part in parts:
-                    if part in gender:
-                        count = count + 1
-                        styled_run = p.add_run(part + " ")
-                        styled_run.font.color.rgb = RGBColor(255,0,0)
-                    else:
-                        p.add_run(part + " ")
+                    for word in gender:
+                        checked = re.match(rf"\b{word}\b", part)
+                        if checked:
+                            count = count + 1
+                            styled_run = p.add_run(part + " ")
+                            styled_run.font.color.rgb = RGBColor(255,0,0)
+                            print(checked)
+                    p.add_run(part + " ")
 
             report = ["No gender-bias detected", f"{count} gender-bias detected"]
             if(count > 0):
