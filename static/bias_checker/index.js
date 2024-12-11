@@ -1,6 +1,7 @@
 const mainContent = document.querySelector(".div-inputfield")
 const fileForm = document.querySelector(".file-form")
 const convertBtn = document.querySelector(".convert-btn")
+const successDiv = document.querySelector(".success-div")
 
 if(mainContent && fileForm){
     mainContent.addEventListener('input',(event)=>{
@@ -17,6 +18,8 @@ if(mainContent && fileForm){
         }
     })
 }
+
+
 
 function copyContent(){
     document.getElementById('hiddenTextArea').value = mainContent.innerHTML

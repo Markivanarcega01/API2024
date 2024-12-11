@@ -55,7 +55,7 @@ def index(request):
         else:
             form = FileForm
             context = {'form' : form}
-        return render(request, 'bias_checker/index.html',context)
+        return render(request, 'bias_checker/index.html',{"success":"Go to files","form":context["form"]})
     except:
         print("error in input")
         return render(request, 'bias_checker/error.html', {"content": "INTERNAL ERROR"})
@@ -112,7 +112,7 @@ def convert(request):
             file_path = os.path.join(save_directory, fileName)#Get the saved file from submit
             doc.save(file_path)
             #return redirect(reverse("bias_checker:index"))
-        
+        return redirect(reverse("bias_checker:index"))
         return render(request, "bias_checker/index.html", {"success":"File generated is located at 'Files'"})
     except:
         return render(request, "bias_checker/error.html", {"content":"CONVERSION ERROR"})
