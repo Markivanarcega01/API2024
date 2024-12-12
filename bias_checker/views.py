@@ -8,6 +8,7 @@ from .forms import FileForm
 from .models import File
 from bias_checker.static.bias_checker.dictionary import dictionary
 import re
+from django.contrib import messages
 # Create your views here.
 
 def index(request):
@@ -34,7 +35,7 @@ def index(request):
                 for part in parts:
                     cleaned_data = re.sub(r"’s", '', part)
                     cleaned_data1 = re.sub(r"[^A-Za-z0-9.-]", '', cleaned_data)
-                    print(cleaned_data1.lower(), part)
+                    #print(cleaned_data1.lower(), part)
                     if cleaned_data1.lower() in gender:
                         count = count + 1
                         styled_run = p.add_run(part + " ")
@@ -52,10 +53,11 @@ def index(request):
             File.objects.filter(pk = last.id).update(file = fileName)# update the database to match the file
             doc.save(os.path.join(save_directory,fileName)) #save the file with a new filename
             os.remove(file_path) #remove the old file
+            messages.add_message(request,messages.INFO, "File submitted. Click 'Files' button to view the output.")
         else:
             form = FileForm
             context = {'form' : form}
-        return render(request, 'bias_checker/index.html',{"success":"Go to files","form":context["form"]})
+        return render(request, 'bias_checker/index.html', context)
     except:
         print("error in input")
         return render(request, 'bias_checker/error.html', {"content": "INTERNAL ERROR"})
@@ -75,6 +77,7 @@ def output(request):
             print(file_path)
             os.remove(file_path)
             data.delete()
+            messages.add_message(request,messages.INFO, "File deleted")
             return redirect(reverse("bias_checker:output"))
         else:
 
@@ -112,6 +115,7 @@ def convert(request):
             file_path = os.path.join(save_directory, fileName)#Get the saved file from submit
             doc.save(file_path)
             #return redirect(reverse("bias_checker:index"))
+            messages.add_message(request,messages.INFO, "File generated. Click 'Files' button to view the output.")
         return redirect(reverse("bias_checker:index"))
         return render(request, "bias_checker/index.html", {"success":"File generated is located at 'Files'"})
     except:

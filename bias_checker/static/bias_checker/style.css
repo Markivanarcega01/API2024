@@ -162,6 +162,7 @@ div[contenteditable=true] {
     max-width: max-content;
     padding: 10px;
     border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 

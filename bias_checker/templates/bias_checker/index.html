@@ -9,7 +9,11 @@
                     <textarea id="hiddenTextArea" hidden name="hiddenTextArea"></textarea>
                     <button class="convert-btn" type="submit" hidden>Convert to docx</button>
                 </form>
-                <div class="success-div">{{success}}</div>
+                {% if messages%}
+                    {% for message in messages%}
+                        <div class="success-div">{{message}}</div>
+                    {% endfor %}
+                {% endif%}
             </div>
             <div id="file-form" class="file-form">
                 <p>Upload Document Files:</p>

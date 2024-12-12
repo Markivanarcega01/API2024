@@ -1,6 +1,11 @@
 {% extends 'bias_checker/base.html'%}
 {% block maincontent %}
     <div class="content">
+        {% if messages%}
+            {% for message in messages%}
+                    <div class="success-div">{{message}}</div>
+            {% endfor %}
+        {% endif%}
             <ul class="output-list">
             {% if form != None %}
                 {% for data in form %}
