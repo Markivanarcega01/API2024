@@ -20,7 +20,7 @@ if(mainContent && fileForm){
 
 
 function copyContent(){
-    document.getElementById('hiddenTextArea').value = mainContent.innerHTML
+    document.getElementById('hiddenTextArea').value = mainContent.innerText
     console.log('working function')
     return true;
 }

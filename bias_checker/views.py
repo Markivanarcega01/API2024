@@ -33,15 +33,21 @@ def index(request):
                 parts = original_text.split(" ")
                 p.clear()
                 for part in parts:
-                    cleaned_data = re.sub(r"’s", '', part)
-                    cleaned_data1 = re.sub(r"[^A-Za-z0-9.-]", '', cleaned_data)
-                    #print(cleaned_data1.lower(), part)
-                    if cleaned_data1.lower() in gender:
-                        count = count + 1
-                        styled_run = p.add_run(part + " ")
-                        styled_run.font.color.rgb = RGBColor(255,0,0)
-                    else:
-                        p.add_run(part + " ")
+                    #cleaned_data = re.sub(r"’s", '', part)
+                    #cleaned_data1 = re.sub(r"[^A-Za-z0-9.-]", '', cleaned_data)
+                    styled_run = p.add_run(part + " ")
+                    for word in gender:
+                        isMatch = re.match(rf"\b{word}\b", part)
+                        if isMatch:
+                            count = count + 1
+                            styled_run.font.color.rgb = RGBColor(255,0,0)
+
+                    # if cleaned_data1.lower() in gender:
+                    #     count = count + 1
+                    #     styled_run = p.add_run(part + " ")
+                    #     styled_run.font.color.rgb = RGBColor(255,0,0)
+                    # else:
+                    #     p.add_run(part + " ")
 
             report = ["No gender-bias detected", f"{count} gender-bias detected"]
             if(count > 0):
@@ -97,8 +103,8 @@ def convert(request):
     try:
         if request.method == "POST":
             data:str = request.POST.get("hiddenTextArea")
-            cleaned_data = data.replace('</div>', "").replace('<span class="highlight-word">', "").replace('</span>',"")
-            separated = cleaned_data.split("<div>")
+            #cleaned_data = data.replace('</div>', "").replace('<span class="highlight-word">', "").replace('</span>',"")
+            separated = data.split("<div>")
             print(separated)
 
             #create empty file
