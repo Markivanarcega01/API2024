@@ -34,10 +34,10 @@ def index(request):
                 p.clear()
                 for part in parts:
                     #cleaned_data = re.sub(r"’s", '', part)
-                    #cleaned_data1 = re.sub(r"[^A-Za-z0-9.-]", '', cleaned_data)
+                    #cleaned_data = re.sub(r"[^A-Za-z0-9.-]", '', part)
                     styled_run = p.add_run(part + " ")
                     for word in gender:
-                        isMatch = re.match(rf"\b{word}\b", part)
+                        isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
                         if isMatch:
                             count = count + 1
                             styled_run.font.color.rgb = RGBColor(255,0,0)
