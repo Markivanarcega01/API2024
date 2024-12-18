@@ -19,7 +19,7 @@ def index(request):
             if form.is_valid():
                 form.save()
             else:
-                return render(request, "bias_checker/error.html", {"content":"FILE ALREADY EXISTS"})
+                return render(request, "bias_checker/error.html", {"content":"FILE ALREADY EXISTS, Delete existing file to continue"})
 
             count = 0
             gender = dictionary
