@@ -9,7 +9,27 @@ from .models import File
 from bias_checker.static.bias_checker.dictionary import dictionary
 import re
 from django.contrib import messages
+import xml.etree.ElementTree as ET
+def hasImage(par):
+    """get all of the images in a paragraph 
+    :param par: a paragraph object from docx
+    :return: a list of r:embed 
+    """
+    ids = []
+    root = ET.fromstring(par._p.xml)
+    namespace = {
+             'a':"http://schemas.openxmlformats.org/drawingml/2006/main", \
+             'r':"http://schemas.openxmlformats.org/officeDocument/2006/relationships", \
+             'wp':"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"}
 
+    inlines = root.findall('.//wp:inline',namespace)
+    for inline in inlines:
+        imgs = inline.findall('.//a:blip', namespace)
+        for img in imgs:     
+            id = img.attrib['{{{0}}}embed'.format(namespace['r'])]
+        ids.append(id)
+
+    return ids
 
 # Create your views here.
 
@@ -37,15 +57,19 @@ def index(request):
                 original_text = p.text
                 parts = original_text.split(" ")
                 
-                for part in parts:
-                    #cleaned_data = re.sub(r"’s", '', part)
-                    #cleaned_data = re.sub(r"[^A-Za-z0-9.-]", '', part)
-                    styled_run = p.add_run(part + " ")
-                    for word in gender:
-                        isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
-                        if isMatch:
-                            count = count + 1
-                            styled_run.font.color.rgb = RGBColor(255,0,0)
+                if hasImage(p):
+                    print('image present')
+                else:
+                    p.clear()
+                    for part in parts:
+                        #cleaned_data = re.sub(r"’s", '', part)
+                        #cleaned_data = re.sub(r"[^A-Za-z0-9.-]", '', part)
+                        styled_run = p.add_run(part + " ")
+                        for word in gender:
+                            isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
+                            if isMatch:
+                                count = count + 1
+                                styled_run.font.color.rgb = RGBColor(255,0,0)
 
                     # if cleaned_data1.lower() in gender:
                     #     count = count + 1
