@@ -28,26 +28,26 @@ def index(request):
             save_directory = os.path.join(settings.BASE_DIR, 'media')
             file_path = os.path.join(save_directory,str(last.file))#Get the saved file from submit
             doc = Document(file_path)
-            for p in doc.paragraphs:
-                original_text = p.text
-                parts = original_text.split(" ")
-                p.clear()
-                for part in parts:
-                    #cleaned_data = re.sub(r"’s", '', part)
-                    #cleaned_data = re.sub(r"[^A-Za-z0-9.-]", '', part)
-                    styled_run = p.add_run(part + " ")
-                    for word in gender:
-                        isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
-                        if isMatch:
-                            count = count + 1
-                            styled_run.font.color.rgb = RGBColor(255,0,0)
+            # for p in doc.paragraphs:
+            #     original_text = p.text
+            #     parts = original_text.split(" ")
+            #     p.clear()
+            #     for part in parts:
+            #         #cleaned_data = re.sub(r"’s", '', part)
+            #         #cleaned_data = re.sub(r"[^A-Za-z0-9.-]", '', part)
+            #         styled_run = p.add_run(part + " ")
+            #         for word in gender:
+            #             isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
+            #             if isMatch:
+            #                 count = count + 1
+            #                 styled_run.font.color.rgb = RGBColor(255,0,0)
 
-                    # if cleaned_data1.lower() in gender:
-                    #     count = count + 1
-                    #     styled_run = p.add_run(part + " ")
-                    #     styled_run.font.color.rgb = RGBColor(255,0,0)
-                    # else:
-                    #     p.add_run(part + " ")
+            #         # if cleaned_data1.lower() in gender:
+            #         #     count = count + 1
+            #         #     styled_run = p.add_run(part + " ")
+            #         #     styled_run.font.color.rgb = RGBColor(255,0,0)
+            #         # else:
+            #         #     p.add_run(part + " ")
 
             report = ["No gender-bias detected", f"{count} gender-bias detected"]
             if(count > 0):
