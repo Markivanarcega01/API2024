@@ -1,6 +1,7 @@
 const mainContent = document.querySelector(".div-inputfield")
 const fileForm = document.querySelector(".file-form")
 const convertBtn = document.querySelector(".convert-btn")
+const upouLinks = document.querySelector('.upou-links')
 
 if(mainContent && fileForm){
     mainContent.addEventListener('input',(event)=>{
@@ -17,6 +18,22 @@ if(mainContent && fileForm){
         }
     })
 }
+
+window.addEventListener('resize',function(){
+    if(this.window.innerWidth < 768){
+        upouLinks.style.display = 'none'
+    }else{
+        upouLinks.style.display = 'block'
+    }
+})
+
+window.addEventListener('load',function(){
+    if(this.window.innerWidth < 768){
+        upouLinks.style.display = 'none'
+    }else{
+        upouLinks.style.display = 'block'
+    }
+})
 
 
 function copyContent(){

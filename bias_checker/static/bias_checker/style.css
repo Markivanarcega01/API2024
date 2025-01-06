@@ -82,6 +82,7 @@ div[contenteditable=true] {
     cursor: pointer;
     border: none;
     height: 100%;
+    margin-top: 1px;
 }
 
 .header-text{
@@ -164,6 +165,15 @@ div[contenteditable=true] {
     border-radius: 5px;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@media screen and (max-width: 768px) {
+    .submit-output-btn{
+        margin-top: 10px;
+    }
+}
+
+
 
 
 
