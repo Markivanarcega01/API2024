@@ -20,6 +20,7 @@ if(mainContent && fileForm){
 }
 
 window.addEventListener('resize',function(){
+    console.log(upouLinks.style.display)
     if(this.window.innerWidth < 768){
         upouLinks.style.display = 'none'
     }else{
@@ -30,8 +31,6 @@ window.addEventListener('resize',function(){
 window.addEventListener('load',function(){
     if(this.window.innerWidth < 768){
         upouLinks.style.display = 'none'
-    }else{
-        upouLinks.style.display = 'block'
     }
 })
 
