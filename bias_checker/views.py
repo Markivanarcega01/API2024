@@ -10,6 +10,71 @@ from bias_checker.static.bias_checker.dictionary import dictionary
 import re
 from django.contrib import messages
 import xml.etree.ElementTree as ET
+from docx.text.hyperlink import Hyperlink
+
+from docx import Document
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
+
+def add_paragraph_bookmark_hyperlink(doc, bookmark_name, text):
+    """
+    Adds a paragraph that links to a bookmark within the document.
+    
+    :param doc: The document to which the paragraph will be added.
+    :param bookmark_name: The name of the bookmark to link to.
+    :param text: The text of the paragraph that will be a hyperlink.
+    """
+
+    # Add a new paragraph
+    paragraph = doc.add_paragraph()
+    
+    # Create the hyperlink element pointing to the bookmark
+    hyperlink = OxmlElement('w:hyperlink')
+    hyperlink.set(qn('w:anchor'), bookmark_name)  # Internal link to bookmark
+    
+    # Create a run with the paragraph text
+    run = OxmlElement('w:r')
+    rPr = OxmlElement('w:rPr')
+
+    # Add underline to the run properties
+    underline = OxmlElement('w:u')
+    underline.set(qn('w:val'), 'single')  # Single underline
+    rPr.append(underline)
+    run.append(rPr)
+
+    text_element = OxmlElement('w:t')
+    text_element.text = text
+    run.append(text_element)
+    hyperlink.append(run)
+    
+    # Append the hyperlink to the paragraph
+    paragraph._element.append(hyperlink)
+
+    # Add a newline after the hyperlink
+    br = OxmlElement('w:br')  # Line break element
+    paragraph._element.append(br)
+    
+
+def add_bookmark(paragraph, bookmark_name):
+    """
+    Adds a bookmark to a paragraph.
+    
+    :param paragraph: The paragraph where the bookmark will be added.
+    :param bookmark_name: The name of the bookmark.
+    """
+    # Create a bookmark start element
+    bookmark_start = OxmlElement('w:bookmarkStart')
+    bookmark_start.set(qn('w:id'), '1')  # ID must be unique
+    bookmark_start.set(qn('w:name'), bookmark_name)
+    
+    # Create a bookmark end element
+    bookmark_end = OxmlElement('w:bookmarkEnd')
+    bookmark_end.set(qn('w:id'), '1')
+    
+    # Add bookmark elements to the paragraph
+    paragraph._element.insert(0, bookmark_start)  # Insert at the start of the paragraph
+    paragraph._element.append(bookmark_end) 
+
 def hasImage(par):
     """get all of the images in a paragraph 
     :param par: a paragraph object from docx
@@ -42,9 +107,12 @@ def index(request):
                 form.save()
             else:
                 return render(request, "bias_checker/error.html", {"content":"FILE ALREADY EXISTS, Delete existing file to continue"})
-
-            count = 0
+            
+            biasIdStart = 1
+            genderBiasList = []
+            genderBiasSentences= []
             gender = dictionary
+            printingOnce = True
             last = File.objects.last()
 
             save_directory = os.path.join(settings.BASE_DIR, 'media')
@@ -56,7 +124,15 @@ def index(request):
             for p in doc.paragraphs:
                 original_text = p.text
                 parts = original_text.split(" ")
-                
+                sentences = re.split(r"[,.]", original_text)
+                """
+                    Logic to get the sentence where the gender-bias is located:
+                        1. Separate the string using . and ,
+                        2. check the sentence if a bias is a substring
+                        3. save the sentence to the collection
+                        4. separate the sentence using whitespaces
+                        5. change the bias word to red font color
+                """
                 if hasImage(p):
                     print('image present')
                 else:
@@ -68,22 +144,43 @@ def index(request):
                         for word in gender:
                             isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
                             if isMatch:
-                                count = count + 1
+                                genderBiasList.append(word)
                                 styled_run.font.color.rgb = RGBColor(255,0,0)
+                                #print(len(genderBiasList))
+                                add_bookmark(p, f"{len(genderBiasList)}")
+                                #print(len(genderBiasList))
 
-                    # if cleaned_data1.lower() in gender:
-                    #     count = count + 1
-                    #     styled_run = p.add_run(part + " ")
-                    #     styled_run.font.color.rgb = RGBColor(255,0,0)
-                    # else:
-                    #     p.add_run(part + " ")
+                for sentence in sentences:
+                    #print(sentence)
+                    words = sentence.split(" ")
+                    for word in words:
+                        for bias in list(dict.fromkeys(genderBiasList)):
+                            isMatch = re.match(rf"\b{bias}\b", word, re.IGNORECASE)
+                            if isMatch:
+                                #print(bias, sentence)
+                                genderBiasSentences.append(sentence)
+                                if printingOnce:
+                                    doc.add_paragraph("\n\nSentences that have Gender-bias words:\n")
+                                # Add another paragraph that links to the bookmark
+                                add_paragraph_bookmark_hyperlink(doc, f"{biasIdStart}", f"{sentence}")
+                                biasIdStart = biasIdStart + 1
+                                printingOnce = False
+                                #print(biasIdStart)
 
-            report = ["No gender-bias detected", f"{count} gender-bias detected"]
-            if(count > 0):
-                doc.add_paragraph(report[1])
+                # for i in range(1, len(genderBiasList)+ 1):
+                #     for sent in genderBiasSentences:
+                #         print(i)
+                #         # Add another paragraph that links to the bookmark
+                #         add_paragraph_bookmark_hyperlink(doc, f"{i}", f"{sent}")
+
+
+            #print(genderBiasSentences)
+
+            if len(genderBiasList) <= 0:
+                doc.add_paragraph("No gender-bias detected")
             else:
-                doc.add_paragraph(report[0])
-            print(count)
+                doc.add_paragraph(f"{len(genderBiasList)} gender-bias detected")
+
             fileName = f"gender_checked_{last.id}_{last.file}"
             File.objects.filter(pk = last.id).update(file = fileName)# update the database to match the file
             doc.save(os.path.join(save_directory,fileName)) #save the file with a new filename
