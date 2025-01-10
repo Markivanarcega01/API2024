@@ -29,6 +29,25 @@ window.addEventListener('resize',function(){
 })
 
 window.addEventListener('load',function(){
+    // this.fetch('https://hooks.zapier.com/hooks/catch/21257997/2zznv7a/',{
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //         data: {
+    //             "email" :"arcegamarkivan@gmail.com",
+    //             "name": "Mark Ivan",
+    //         }
+    //     }),
+    //     mode: 'no-cors'
+    // }).then(response =>{
+    //     if(response.ok){
+    //         console.log('success')
+    //     }else{
+    //         console.log('error')
+    //     }
+    // }).catch(error => console.log(error))
     if(this.window.innerWidth < 768){
         upouLinks.style.display = 'none'
     }

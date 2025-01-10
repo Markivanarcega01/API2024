@@ -120,59 +120,97 @@ def index(request):
             doc = Document(file_path)
             # Create a folder to save images if it doesn't exist
             
+            
+            if doc.paragraphs != None:
+                for p in doc.paragraphs:
+                    original_text = p.text
+                    parts = original_text.split(" ")
+                    sentences = re.split(r"[,.]", original_text)
+                    """
+                        Logic to get the sentence where the gender-bias is located:
+                            1. Separate the string using . and ,
+                            2. check the sentence if a bias is a substring
+                            3. save the sentence to the collection
+                            4. separate the sentence using whitespaces
+                            5. change the bias word to red font color
+                    """
+                    if hasImage(p):
+                        print('image present')
+                    else:
+                        p.clear()
+                        for part in parts:
+                            #cleaned_data = re.sub(r"’s", '', part)
+                            #cleaned_data = re.sub(r"[^A-Za-z0-9.-]", '', part)
+                            styled_run = p.add_run(part + " ")
+                            for word in gender:
+                                isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
+                                if isMatch:
+                                    genderBiasList.append(word)
+                                    styled_run.font.color.rgb = RGBColor(255,0,0)
+                                    #print(len(genderBiasList))
+                                    add_bookmark(p, f"{len(genderBiasList)}")
+                                    #print(len(genderBiasList))
 
-            for p in doc.paragraphs:
-                original_text = p.text
-                parts = original_text.split(" ")
-                sentences = re.split(r"[,.]", original_text)
-                """
-                    Logic to get the sentence where the gender-bias is located:
-                        1. Separate the string using . and ,
-                        2. check the sentence if a bias is a substring
-                        3. save the sentence to the collection
-                        4. separate the sentence using whitespaces
-                        5. change the bias word to red font color
-                """
-                if hasImage(p):
-                    print('image present')
-                else:
-                    p.clear()
-                    for part in parts:
-                        #cleaned_data = re.sub(r"’s", '', part)
-                        #cleaned_data = re.sub(r"[^A-Za-z0-9.-]", '', part)
-                        styled_run = p.add_run(part + " ")
-                        for word in gender:
-                            isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
-                            if isMatch:
-                                genderBiasList.append(word)
-                                styled_run.font.color.rgb = RGBColor(255,0,0)
-                                #print(len(genderBiasList))
-                                add_bookmark(p, f"{len(genderBiasList)}")
-                                #print(len(genderBiasList))
+                    for sentence in sentences:
+                        #print(sentence)
+                        words = sentence.split(" ")
+                        for word in words:
+                            for bias in list(dict.fromkeys(genderBiasList)):
+                                isMatch = re.match(rf"\b{bias}\b", word, re.IGNORECASE)
+                                if isMatch:
+                                    #print(bias, sentence)
+                                    genderBiasSentences.append(sentence)
+                                    if printingOnce:
+                                        doc.add_paragraph("\n\nSentences that have Gender-bias words:\n")
+                                    # Add another paragraph that links to the bookmark
+                                    add_paragraph_bookmark_hyperlink(doc, f"{biasIdStart}", f"{sentence}")
+                                    biasIdStart = biasIdStart + 1
+                                    printingOnce = False
+                                    #print(biasIdStart)
 
-                for sentence in sentences:
-                    #print(sentence)
-                    words = sentence.split(" ")
-                    for word in words:
-                        for bias in list(dict.fromkeys(genderBiasList)):
-                            isMatch = re.match(rf"\b{bias}\b", word, re.IGNORECASE)
-                            if isMatch:
-                                #print(bias, sentence)
-                                genderBiasSentences.append(sentence)
-                                if printingOnce:
-                                    doc.add_paragraph("\n\nSentences that have Gender-bias words:\n")
-                                # Add another paragraph that links to the bookmark
-                                add_paragraph_bookmark_hyperlink(doc, f"{biasIdStart}", f"{sentence}")
-                                biasIdStart = biasIdStart + 1
-                                printingOnce = False
-                                #print(biasIdStart)
+                    # for i in range(1, len(genderBiasList)+ 1):
+                    #     for sent in genderBiasSentences:
+                    #         print(i)
+                    #         # Add another paragraph that links to the bookmark
+                    #         add_paragraph_bookmark_hyperlink(doc, f"{i}", f"{sent}")
 
-                # for i in range(1, len(genderBiasList)+ 1):
-                #     for sent in genderBiasSentences:
-                #         print(i)
-                #         # Add another paragraph that links to the bookmark
-                #         add_paragraph_bookmark_hyperlink(doc, f"{i}", f"{sent}")
-
+            if doc.tables != None:
+                for table in doc.tables:
+                    for row in table.rows:
+                        for cell in row.cells:
+                            for paragraph in cell.paragraphs:
+                                original_text = paragraph.text
+                                parts = original_text.split(" ")
+                                sentences = re.split(r"[,.]", original_text)
+                                if hasImage(paragraph):
+                                    print('image present in cell')
+                                else:
+                                    paragraph.clear()
+                                    for part in parts:
+                                        #cleaned_data = re.sub(r"’s", '', part)
+                                        #cleaned_data = re.sub(r"[^A-Za-z0-9.-]", '', part)
+                                        styled_run = paragraph.add_run(part + " ")
+                                        for word in gender:
+                                            isMatch = re.match(rf"\b{word}\b", part, re.IGNORECASE)
+                                            if isMatch:
+                                                genderBiasList.append(word)
+                                                styled_run.font.color.rgb = RGBColor(255,0,0)
+                                                add_bookmark(paragraph, f"{len(genderBiasList)}")
+                                
+                                for sentence in sentences:
+                                    words = sentence.split(" ")
+                                    for word in words:
+                                        for bias in list(dict.fromkeys(genderBiasList)):
+                                            isMatch = re.match(rf"\b{bias}\b", word, re.IGNORECASE)
+                                            if isMatch:
+                                                #print(bias, sentence)
+                                                genderBiasSentences.append(sentence)
+                                                if printingOnce:
+                                                    doc.add_paragraph("\n\nSentences that have Gender-bias words:\n")
+                                                # Add another paragraph that links to the bookmark
+                                                add_paragraph_bookmark_hyperlink(doc, f"{biasIdStart}", f"{sentence}")
+                                                biasIdStart = biasIdStart + 1
+                                                printingOnce = False
 
             #print(genderBiasSentences)
 
