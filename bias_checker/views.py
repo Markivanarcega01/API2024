@@ -11,6 +11,7 @@ import re
 from django.contrib import messages
 import xml.etree.ElementTree as ET
 from docx.text.hyperlink import Hyperlink
+from django.views.decorators.csrf import csrf_protect
 
 from docx import Document
 from docx.oxml import OxmlElement
@@ -98,6 +99,7 @@ def hasImage(par):
 
 # Create your views here.
 
+@csrf_protect
 def index(request):
     try:    
         if request.method == "POST":
