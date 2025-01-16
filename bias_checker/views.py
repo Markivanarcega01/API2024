@@ -238,6 +238,7 @@ def index(request):
     #return render(request, 'bias_checker/index.html', context)
     
 
+@csrf_exempt
 def output(request):
     try:
         if request.method == "POST":
@@ -267,6 +268,7 @@ def output(request):
         print("error in output")
         return render(request, "bias_checker/error.html", {"content":"INTERNAL ERROR"})
     
+@csrf_exempt
 def convert(request):
     try:
         if request.method == "POST":
