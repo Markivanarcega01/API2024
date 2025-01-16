@@ -51,7 +51,6 @@ MIDDLEWARE = [
     #'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CSRF_COOKIE_DOMAIN = 'http://127.0.0.1:8000/'
 #X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 INTERNAL_IPS = [
