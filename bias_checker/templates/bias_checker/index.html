@@ -1,19 +1,18 @@
 {% extends 'bias_checker/base.html'%}    
 {% block maincontent %}
-    <div>
         <div class="content" id="content">
             <div>
                 <div contenteditable="true" id = "div-inputfield" placeholder="Enter text here.." class="div-inputfield" name="div-inputfield"></div>
-                <form action= "{% url 'bias_checker:convert' %}" method="post" enctype="multipart/form-data" onsubmit='return copyContent()'>
-                    {% csrf_token %}
-                    <textarea id="hiddenTextArea" hidden name="hiddenTextArea"></textarea>
-                    <button class="convert-btn" type="submit" hidden>Convert to docx</button>
-                </form>
-                {% if messages%}
-                    {% for message in messages%}
-                        <div class="success-div">{{message}}</div>
-                    {% endfor %}
-                {% endif%}
+                    <form action= "{% url 'bias_checker:convert' %}" method="post" enctype="multipart/form-data" onsubmit='return copyContent()'>
+                        {% csrf_token %}
+                        <textarea id="hiddenTextArea" hidden name="hiddenTextArea"></textarea>
+                        <button class="convert-btn" type="submit" hidden>Convert to docx</button>
+                    </form>
+                    {% if messages%}
+                        {% for message in messages%}
+                            <div class="success-div">{{message}}</div>
+                        {% endfor %}
+                    {% endif%}
             </div>
             <div id="file-form" class="file-form">
                 <p>Upload Document Files:</p>
@@ -27,5 +26,14 @@
                 </form>
             </div>
         </div>
-    </div>
+        <div class="information-section">
+            <img src="/static/bias_checker/images/gender-neutral.jpg" width="200" height="100" class="footer-icon"/>
+            <div id="description">
+            Gender Sensitivity Checker is a web-based tool that helps users identify and address gender-biased language in documents. 
+            Simply upload a DOCX file, and the tool will automatically highlight gender-biased words and add hyperlinks to them. 
+            Clicking on a highlighted word will navigate to a bottom section where the full sentence is displayed for context, 
+            making it easy to review and refine your content for inclusivity.
+            </div>
+            <img src="/static/bias_checker/images/document.jpg" width="200" height="100" class="footer-icon"/>
+        </div>
 {% endblock %}

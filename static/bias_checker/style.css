@@ -166,10 +166,50 @@ div[contenteditable=true] {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.information-section{
+    margin-top: 20px;
+    background-color: white;
+    max-width: 100%;
+    padding: 80px 10px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    display:flex;
+    flex-direction:row;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#description{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: normal;
+    font-size: medium;
+    line-height: 1.5;
+    text-align: left;
+    width: 50%;
+    color: #333333;
+}
+
+
+
+
 
 @media screen and (max-width: 768px) {
     .submit-output-btn{
         margin-top: 10px;
+    }
+    .footer-icon{
+        display: none;
+    }
+    .information-section{
+        justify-content: center;
+        width:100%;
+    }
+    .content{
+        width:90%;
+    }
+    #description{
+        width: 90%;
     }
 }
 
