@@ -92,6 +92,7 @@ dictionary = [
   "maiden",
   "mailman",
   "man",
+  "men",
   "man-hour",
   "man-made",
   "mankind",

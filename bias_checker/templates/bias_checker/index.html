@@ -27,13 +27,19 @@
             </div>
         </div>
         <div class="information-section">
-            <img src="/static/bias_checker/images/gender-neutral.jpg" width="200" height="100" class="footer-icon"/>
-            <div id="description">
-            Gender Sensitivity Checker is a web-based tool that helps users identify and address gender-biased language in documents. 
+            <div class="description">
+            <span class="header-text">Gender Sensitivity Checker</span> is a web-based tool that helps users identify and address gender-biased language in documents. 
             Simply upload a DOCX file, and the tool will automatically highlight gender-biased words and add hyperlinks to them. 
             Clicking on a highlighted word will navigate to a bottom section where the full sentence is displayed for context, 
             making it easy to review and refine your content for inclusivity.
             </div>
-            <img src="/static/bias_checker/images/document.jpg" width="200" height="100" class="footer-icon"/>
+            <div class="description">
+                <p><span class="header-text">How does it work?</span>
+                The Gender Sensitivity Checker uses a dictionary-based approach to identify gender-biased words in a DOCX file. Here's how it works:<br>
+                <strong>Word Matching</strong>: The program references a predefined dictionary.py file, which contains an array of gender-biased words.<br>
+                <strong>Document Scanning</strong>: Using the python-docx module, the tool scans the uploaded DOCX file and compares each word against the dictionary.<br>
+                <strong>Highlighting and Hyperlinking</strong>: If a match is found, the word is highlighted, and a hyperlink is added. Clicking the hyperlink will navigate to a newly inserted section at the bottom of the document.<br>
+                <strong>Contextual References</strong>: The tool appends a "References" section at the end of the document, where each identified word appears in its original sentence, providing users with context for revision.</p>
+            </div>
         </div>
 {% endblock %}
