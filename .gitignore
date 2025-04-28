@@ -1,1 +1,3 @@
 *.pyc
+gendersensitivity_env
+db.sqlite3
