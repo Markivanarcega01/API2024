@@ -1,3 +1,4 @@
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from docx import Document
@@ -12,7 +13,7 @@ from django.contrib import messages
 import xml.etree.ElementTree as ET
 from docx.text.hyperlink import Hyperlink
 from django.views.decorators.csrf import csrf_exempt
-
+import io
 
 
 from docx import Document
@@ -103,25 +104,32 @@ def hasImage(par):
 
 @csrf_exempt
 def index(request):
+    context = {'form': FileForm()}
+    return render(request, "bias_checker/index.html", context)
+    
+def gender_checker(request):
     try:    
         if request.method == "POST":
             form = FileForm(request.POST, request.FILES)
-            context = {'form' : form}
+            #context = {'form' : form}
             if form.is_valid():
-                form.save()
+                #form.save()
+                file = request.FILES['file']
             else:
-                return render(request, "bias_checker/error.html", {"content":"FILE ALREADY EXISTS, Delete existing file to continue"})
+                return render(request, "bias_checker/error.html", {"content":"Server error"})
             
             biasIdStart = 1
             genderBiasList = []
             genderBiasSentences= []
             gender = dictionary
             printingOnce = True
-            last = File.objects.last()
+            #last = File.objects.last()
 
-            save_directory = os.path.join(settings.BASE_DIR, 'media')
-            file_path = os.path.join(save_directory,str(last.file))#Get the saved file from submit
-            doc = Document(file_path)
+            #print(request.FILES['file'])
+            #save_directory = os.path.join(settings.BASE_DIR, 'media')
+            #file_path = os.path.join(save_directory,str(last.file))#Get the saved file from submit
+            doc = Document(file)
+            docx_io = io.BytesIO()
             # Create a folder to save images if it doesn't exist
             
             
@@ -223,20 +231,32 @@ def index(request):
             else:
                 doc.add_paragraph(f"{len(genderBiasList)} gender-bias detected")
 
-            fileName = f"gender_checked_{last.id}_{last.file}"
-            File.objects.filter(pk = last.id).update(file = fileName)# update the database to match the file
-            doc.save(os.path.join(save_directory,fileName)) #save the file with a new filename
-            os.remove(file_path) #remove the old file
-            messages.add_message(request,messages.INFO, "File submitted. Click 'Files' button to view the output.")
-        else:
-            form = FileForm
-            context = {'form' : form}
-        return render(request, 'bias_checker/index.html', context)
+            #fileName = f"gender_checked_{last.id}_{last.file}"
+            #File.objects.filter(pk = last.id).update(file = fileName)# update the database to match the file
+            #doc.save(os.path.join(save_directory,fileName)) #save the file with a new filename
+            #os.remove(file_path) #remove the old file
+            # Use BytesIO to save the presentation in memory
+            doc.save(docx_io)
+            docx_io.seek(0)  # Important: go to the beginning of the stream
+
+            # Create response
+            # response = HttpResponse(content_type='application/vnd.ms-powerpoint')
+            # response['Content-Disposition'] = 'attachment; filename="sample.pptx"'
+            # response.write(pptx_io.getvalue())
+            # pptx_io.close()
+            # return response
+
+            messages.add_message(request,messages.INFO, "File is ready to download")
+            response = HttpResponse(
+                docx_io.read(),
+                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            )
+            response['Content-Disposition'] = f'attachment; filename=gender_checked_{file}'
+            print(response)
+            return response
     except:
         print("error in input")
-        return render(request, 'bias_checker/error.html', {"content": "INTERNAL ERROR"})
-    #return render(request, 'bias_checker/index.html', context)
-    
+        return JsonResponse({"error": "error in input"})
 
 @csrf_exempt
 def output(request):
@@ -278,24 +298,34 @@ def convert(request):
             print(separated)
 
             #create empty file
-            File.objects.create(file = "generated_file.docx")
-            last = File.objects.last()
+            #file = File.objects.create(file = "generated_file.docx")
+            #last = File.objects.last()
             doc = Document()
+            docx_io = io.BytesIO()
             
             for row in separated:
                 doc.add_paragraph(row)
 
-            fileName = f"{last.id}_{last.file}"
-            File.objects.filter(pk = last.id).update(file = fileName)# update the database to match the file
-            save_directory = os.path.join(settings.BASE_DIR, 'media')
-            file_path = os.path.join(save_directory, fileName)#Get the saved file from submit
-            doc.save(file_path)
+            #fileName = f"{last.id}_{last.file}"
+            #File.objects.filter(pk = last.id).update(file = fileName)# update the database to match the file
+            #save_directory = os.path.join(settings.BASE_DIR, 'media')
+            #file_path = os.path.join(save_directory, fileName)#Get the saved file from submit
+            doc.save(docx_io)
+            docx_io.seek(0)  # Important: go to the beginning of the stream
             #return redirect(reverse("bias_checker:index"))
-            messages.add_message(request,messages.INFO, "File generated. Click 'Files' button to view the output.")
-        return redirect(reverse("bias_checker:index"))
-        return render(request, "bias_checker/index.html", {"success":"File generated is located at 'Files'"})
+            #messages.add_message(request,messages.INFO, "File generated")
+            response = HttpResponse(
+                docx_io.read(),
+                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            )
+            response['Content-Disposition'] = f'attachment; filename=generated_file.docx'
+            print(response)
+            return response
+        #return redirect(reverse("bias_checker:index"))
+        #return render(request, "bias_checker/index.html", {"success":"File generated is located at 'Files'"})
     except:
-        return render(request, "bias_checker/error.html", {"content":"CONVERSION ERROR"})
+        return JsonResponse({"error": "error in input"})
+       #return render(request, "bias_checker/error.html", {"content":"CONVERSION ERROR"})
 
 
 def privacy_policy(request):

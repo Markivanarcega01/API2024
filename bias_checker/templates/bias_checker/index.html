@@ -16,13 +16,13 @@
             </div>
             <div id="file-form" class="file-form">
                 <p>Upload Document Files:</p>
-                <form action = "{% url 'bias_checker:index'%}" method="post" enctype = "multipart/form-data">
+                <form action = "{% url 'bias_checker:gender_check'%}" method="post" enctype = "multipart/form-data">
                     {% csrf_token %}
                     {% for item in form %}
                         {{item}}
                     {% endfor %}
                     <button type="submit" class="submit-output-btn"/>Gender Check</button>
-                    <a href="{% url 'bias_checker:output' %}" class="submit-output-btn">Files</a>
+                    {% comment %} <a href="{% url 'bias_checker:output' %}" class="submit-output-btn">Files</a> {% endcomment %}
                 </form>
             </div>
         </div>

@@ -13,6 +13,7 @@ app_name = 'bias_checker'
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('gender-check/', views.gender_checker, name="gender_check"),
     path('output/', views.output, name="output"),
     path('convert/',views.convert, name="convert"),
     path('privacy-policy/', views.privacy_policy, name="privacy_policy"),
