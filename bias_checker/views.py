@@ -298,5 +298,11 @@ def convert(request):
         return render(request, "bias_checker/error.html", {"content":"CONVERSION ERROR"})
 
 
+def privacy_policy(request):
+    return render(request, "bias_checker/privacy_policy.html")
+
+def web_ext_policy(request):
+    return render(request, "bias_checker/web_ext_policy.html")
+
 # def error(request):
 #     return render(request, "bias_checker/error.html", {"content":"Error in error"})

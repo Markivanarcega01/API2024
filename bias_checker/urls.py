@@ -15,5 +15,7 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('output/', views.output, name="output"),
     path('convert/',views.convert, name="convert"),
+    path('privacy-policy/', views.privacy_policy, name="privacy_policy"),
+    path('web-ext-policy/', views.web_ext_policy, name="web_ext_policy"),
     #path('error/', views.error, name="error"),
 ]

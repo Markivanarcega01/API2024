@@ -1,0 +1,92 @@
+{% extends 'bias_checker/base.html'%} {% block maincontent %}
+<div class="content">
+  <h1>Privacy Policy for Gender Bias Checker Web Extension</h1>
+  <hr>
+  <p>
+    At <strong>Gender Bias Checker</strong>, we are committed to protecting your
+    privacy. This Privacy Policy outlines how our Chrome web extension collects,
+    uses, and protects any information when you use our service.
+  </p>
+
+  <h2>Information</h2>
+  <p>
+    <strong
+      >We do not collect, store, or transmit any personal or sensitive user
+      data.</strong
+    >
+    The Gender Bias Checker extension operates entirely
+    <strong>locally</strong> within your browser. All text processing occurs on
+    your device and is not sent to any external servers.
+  </p>
+
+  <h2>How the Extension Works</h2>
+  <ul>
+    <li>
+      The extension scans <strong>only the text you type</strong> into input
+      fields and <code>contenteditable</code> elements on webpages.
+    </li>
+    <li>
+      Gender-biased words are detected based on a predefined local dictionary.
+    </li>
+    <li>Suggestions for inclusive alternatives are displayed in real time.</li>
+    <li>
+      <strong>No text data is collected, logged, or transmitted</strong> outside
+      of your browser.
+    </li>
+  </ul>
+
+  <h2>Permissions Justification</h2>
+  <p>
+    To function as intended, the extension requests the following permissions:
+  </p>
+  <ul>
+    <li>
+      <strong>tabs</strong>: To determine when a new page is loaded and activate
+      scanning.
+    </li>
+    <li>
+      <strong>scripting</strong>: To inject scripts into active webpages for
+      monitoring user text input.
+    </li>
+    <li>
+      <strong>host_permissions</strong> (e.g., <code>"&lt;all_urls&gt;"</code>):
+      To enable functionality on any webpage where users may enter text.
+    </li>
+  </ul>
+  <p>
+    These permissions are used
+    <strong
+      >solely for the purpose of enabling real-time detection and
+      suggestions</strong
+    >
+    and are not used for tracking or data harvesting.
+  </p>
+
+  <h2>Data Sharing</h2>
+  <p>
+    We do <strong>not share, sell, or transfer</strong> any information to third
+    parties, because we do not collect any.
+  </p>
+
+  <h2>Third-Party Services</h2>
+  <p>
+    This extension does <strong>not</strong> use any third-party analytics
+    tools, advertising networks, or remote servers. Everything happens locally
+    in your browser.
+  </p>
+
+  <h2>Changes to This Policy</h2>
+  <p>
+    We may update this Privacy Policy from time to time. Changes will be posted
+    on this page with an updated effective date. We encourage users to review
+    the policy periodically.
+  </p>
+
+  <h2>Contact Us</h2>
+  <p>
+    If you have any questions or concerns about this privacy policy, feel free
+    to contact us at: <br />
+    <strong>codtl@upou.edu.ph</strong>
+  </p>
+</div>
+{% endblock %}
