@@ -259,35 +259,35 @@ def gender_checker(request):
         print("error in input")
         return JsonResponse({"error": "error in input"})
 
-@csrf_exempt
-def output(request):
-    try:
-        if request.method == "POST":
-            file_id = request.POST.get("data-id")
-            print(file_id)
-            data = File.objects.filter(pk = file_id).first()
-            print(data)
-            save_directory = os.path.join(settings.BASE_DIR, 'media')
-            file_path = os.path.join(save_directory, str(data.file))#Get the saved file from submit
+# @csrf_exempt
+# def output(request):
+#     try:
+#         if request.method == "POST":
+#             file_id = request.POST.get("data-id")
+#             print(file_id)
+#             data = File.objects.filter(pk = file_id).first()
+#             print(data)
+#             save_directory = os.path.join(settings.BASE_DIR, 'media')
+#             file_path = os.path.join(save_directory, str(data.file))#Get the saved file from submit
 
-            print(file_path)
-            os.remove(file_path)
-            data.delete()
-            messages.add_message(request,messages.INFO, "File deleted")
-            return redirect(reverse("bias_checker:output"))
-        else:
+#             print(file_path)
+#             os.remove(file_path)
+#             data.delete()
+#             messages.add_message(request,messages.INFO, "File deleted")
+#             return redirect(reverse("bias_checker:output"))
+#         else:
 
-            form = File.objects.all()
-            context = {'form': form}
-            #print(form)
-            if not form.exists():
-                print("Empty query")
-                return render(request, "bias_checker/output.html", {"content": "No data"})
+#             form = File.objects.all()
+#             context = {'form': form}
+#             #print(form)
+#             if not form.exists():
+#                 print("Empty query")
+#                 return render(request, "bias_checker/output.html", {"content": "No data"})
 
-            return render(request, "bias_checker/output.html", context)
-    except:
-        print("error in output")
-        return render(request, "bias_checker/error.html", {"content":"INTERNAL ERROR"})
+#             return render(request, "bias_checker/output.html", context)
+#     except:
+#         print("error in output")
+#         return render(request, "bias_checker/error.html", {"content":"INTERNAL ERROR"})
     
 @csrf_exempt
 def convert(request):
