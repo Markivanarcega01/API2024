@@ -106,7 +106,8 @@ def hasImage(par):
 def index(request):
     context = {'form': FileForm()}
     return render(request, "bias_checker/index.html", context)
-    
+
+@csrf_exempt
 def gender_checker(request):
     try:    
         if request.method == "POST":
