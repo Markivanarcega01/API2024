@@ -1,7 +1,15 @@
 # Localhost Setup
 
-1. Clone the source code
- - git clone https://github.com/Markivanarcega01/gender-sensitivity-project.git
-2. CD to the directory of the project. cd gender-sensitivity-project
-3. run in terminal. npm run install(nodejs should be installed before running this command)
-4. then run npm run dev
+1. Clone the repository 
+ - git clone https://github.com/Markivanarcega01/API2024.git
+
+2. make sure that python 3.13 and pip are installed.
+CD to the directory, and setup a virtual environment
+https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
+
+3. Activate the environment before installing the packages. To install the packages run.
+ - pip install -r requirements.txt
+
+4. Finally, run
+ - python manage.py runserver   (for windows)
+ - python3 manage.py runserver  (for mac)
