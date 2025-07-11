@@ -13,3 +13,5 @@ https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-e
 4. Finally, run
  - python manage.py runserver   (for windows)
  - python3 manage.py runserver  (for mac)
+
+Live: https://markivan01.pythonanywhere.com/bias_checker/
